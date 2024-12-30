@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class BaseView: UIView {
+class BaseView: View {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
