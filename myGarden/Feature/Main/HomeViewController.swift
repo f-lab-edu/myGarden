@@ -1,6 +1,6 @@
 //
 //  HomeViewController.swift
-//  MyForest
+//  MyGarden
 //
 //  Created by zeze kim on 1/1/25.
 //

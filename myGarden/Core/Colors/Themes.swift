@@ -1,6 +1,6 @@
 //
 //  Themes.swift
-//  MyForest
+//  MyGarden
 //
 //  Created by zeze kim on 12/28/24.
 //
@@ -19,7 +19,7 @@ enum Themes {
     static func updateTheme() {
         let currentStyle = UITraitCollection.current.userInterfaceStyle
         isDarkMode = (currentStyle == .dark)
-        print("currentStyle : \(currentStyle)")
+        print("isDarkMode : \(isDarkMode)")
         UserDefaults.standard.set(isDarkMode, forKey: "isDarkMode")
         
     }

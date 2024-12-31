@@ -1,6 +1,6 @@
 //
 //  BaseViewController.swift
-//  MyForest
+//  MyGarden
 //
 //  Created by zeze kim on 1/1/25.
 //
@@ -28,6 +28,7 @@ class BaseViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         Themes.updateTheme()
+      
     }
     
 }
