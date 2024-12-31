@@ -7,4 +7,7 @@
 
 class PlantListViewController : BaseViewController {
     
+    override func viewDidLoad() {
+        print("PlantListViewController")
+    }
 }

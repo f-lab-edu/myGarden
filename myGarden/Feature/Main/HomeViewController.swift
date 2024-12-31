@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import SnapKit
+//import SnapKit
 import CoreData
 
 class HomeViewController : BaseViewController {
@@ -14,6 +14,7 @@ class HomeViewController : BaseViewController {
     
     override func viewDidLoad() {
         print("HomeViewController")
+        self.view.backgroundColor  = .yellow
     }
     
 }

@@ -5,7 +5,7 @@
 //  Created by zeze kim on 1/1/25.
 //
 import UIKit
-import SnapKit
+//import SnapKit
 
 class OnboardingViewController: BaseViewController {
     
