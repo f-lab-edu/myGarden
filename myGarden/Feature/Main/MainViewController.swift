@@ -17,30 +17,28 @@ class MainViewController: BaseViewController {
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-        let user = fetchFirstTime()
-        if user == nil {
-//            view.backgroundColor = .red
-            let onboarding = OnboardingViewController(viewModel: OnboardingViewModel()) {
-            // MainViewController 에서 홈뷰 컨트롤러로 푸쉬하는 함수를 내려보내주기?
-            // 아니면 온보딩에서 바로 메인뷰로 넘어갈지 고민하기
-                // 온보딩에서 해야할 것 1. 유저 엔티티 생성하기 2. 완료시 엔티티의 FirstTime false로 바꿔주기
+        print("MainViewController start")
+        
+        DispatchQueue.main.async {
+            let user = fetchFirstTime()
+            if user == false {
+                self.moveToHome()
+            } else {
+                saveUserData(firstTime: true)
+                let onboardingCoordinator = OnboardingCoordinator(rootViewController: self)
+                onboardingCoordinator.start {
+                    saveUserData(firstTime: false)
+                    
+                }
             }
-            onboarding.modalPresentationStyle = .fullScreen
-            present(onboarding, animated: true, completion: nil)
-    
-        }else if user == false {
-            view.backgroundColor = .green
-            let homeView = HomeViewController()
-            homeView.modalPresentationStyle = .fullScreen
-            present(homeView, animated: true, completion: nil )
-        }else {
-            view.tintColor = .blue
+            
         }
-        print("MainViewController")
-        // 배경색 설정
-  
-       
     }
     
-   
+    func moveToHome() {
+        DispatchQueue.main.async {
+            let homeCoordinator = HomeCoordinator(rootViewController: self)
+            homeCoordinator.start()
+        }
+    }
 }
