@@ -25,6 +25,6 @@ class HomeViewController : BaseViewController {
                 view.addSubview(button)
     }
     @objc func buttonTapped() {
-        deleteUserData()
+        UserDefaults.standard.removeObject(forKey: "isFirstTime")
     }
 }

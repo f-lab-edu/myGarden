@@ -7,7 +7,7 @@
 import UIKit
 import SnapKit
 
-class OnboardingViewController: BaseViewController {
+final class OnboardingViewController: BaseViewController {
     var viewModel: OnboardingViewModel!
     var onComplete: () -> Void
     
@@ -58,7 +58,7 @@ class OnboardingViewController: BaseViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init?(coder: NSCoder) {
+    @MainActor required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

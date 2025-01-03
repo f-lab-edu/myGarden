@@ -5,7 +5,7 @@
 //  Created by zeze kim on 1/1/25.
 //
 import UIKit
-
+import RxSwift
 class OnboardingCoordinator: BaseCoordinator {
     var rootViewController: BaseViewController
     
@@ -32,4 +32,16 @@ class OnboardingCoordinator: BaseCoordinator {
         let homeCoordinator = HomeCoordinator(rootViewController: self.rootViewController)
         homeCoordinator.start()
     }
+
+    
+    func startRx() -> Observable<Void> {
+            return Observable<Void>.create { observer in
+                self.start {
+                    observer.onNext(())
+                    observer.onCompleted()
+                }
+                return Disposables.create()
+            }
+        }
+
 }

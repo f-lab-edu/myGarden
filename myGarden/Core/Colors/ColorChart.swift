@@ -11,6 +11,9 @@ import SwiftUI
 
 enum ColorChart {
 
+    
+    
+    
     // primary 색상
     static var primary: UIColor {
         return Themes.isDarkMode ? UIColor(hex: "3E7B27") : UIColor(hex: "5CB338")

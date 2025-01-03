@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4CE1E04A2D248B5C00714977 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4CE1E0492D248B5C00714977 /* SnapKit */; };
+		4CE1E1042D27EF6C00714977 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4CE1E1032D27EF6C00714977 /* RxSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -53,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CE1E1042D27EF6C00714977 /* RxSwift in Frameworks */,
 				4CE1E04A2D248B5C00714977 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -106,6 +108,7 @@
 			name = myGarden;
 			packageProductDependencies = (
 				4CE1E0492D248B5C00714977 /* SnapKit */,
+				4CE1E1032D27EF6C00714977 /* RxSwift */,
 			);
 			productName = myGarden;
 			productReference = 4CE1DF3B2D24893800714977 /* myGarden.app */;
@@ -137,6 +140,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				4CE1E0482D248B5C00714977 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				4CE1E1022D27EF6C00714977 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4CE1DF3C2D24893800714977 /* Products */;
@@ -376,6 +380,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		4CE1E1022D27EF6C00714977 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.8.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -383,6 +395,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4CE1E0482D248B5C00714977 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		4CE1E1032D27EF6C00714977 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4CE1E1022D27EF6C00714977 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
