@@ -16,10 +16,8 @@ class HomeCoordinator : BaseCoordinator {
     
     override func start() {
         // 홈 화면을 보여줄 뷰 컨트롤러 생성
-        let homeViewController = HomeViewController()
-        homeViewController.modalPresentationStyle = .fullScreen
-        DispatchQueue.main.async {
-            self.rootViewController.present(homeViewController, animated: true)
-        }
+   
     }
+    
+    
 }

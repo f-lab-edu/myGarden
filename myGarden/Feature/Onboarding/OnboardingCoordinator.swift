@@ -13,20 +13,13 @@ class OnboardingCoordinator: BaseCoordinator {
         self.rootViewController = rootViewController
     }
     
-    func start(onComplete: @escaping () -> Void) {
+    override func start() {
         let viewModel = OnboardingViewModel()
-        let onboardingViewController = OnboardingViewController(viewModel: viewModel, onComplete: onComplete)
+        let onboardingViewController = OnboardingViewController(viewModel: viewModel)
      
         onboardingViewController.modalPresentationStyle = .fullScreen
         rootViewController.present(onboardingViewController, animated: true)
         
-
-        onboardingViewController.onComplete = {
-            onComplete()
-            onboardingViewController.dismiss(animated: true) {
-                self.moveToHome()
-            }
-        }
     }
     func moveToHome() {
         let homeCoordinator = HomeCoordinator(rootViewController: self.rootViewController)
@@ -34,14 +27,14 @@ class OnboardingCoordinator: BaseCoordinator {
     }
 
     
-    func startRx() -> Observable<Void> {
-            return Observable<Void>.create { observer in
-                self.start {
-                    observer.onNext(())
-                    observer.onCompleted()
-                }
-                return Disposables.create()
-            }
-        }
+//    func startRx() -> Observable<Void> {
+//            return Observable<Void>.create { observer in
+//                self.start {
+//                    observer.onNext(())
+//                    observer.onCompleted()
+//                }
+//                return Disposables.create()
+//            }
+//        }
 
 }

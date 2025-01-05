@@ -9,8 +9,7 @@ import SnapKit
 
 final class OnboardingViewController: BaseViewController {
     var viewModel: OnboardingViewModel!
-    var onComplete: () -> Void
-    
+ 
     lazy var scrollView : UIScrollView = {
         let view = UIScrollView()
         view.delegate = self
@@ -52,9 +51,9 @@ final class OnboardingViewController: BaseViewController {
         return button
     }()
     
-    init(viewModel: OnboardingViewModel, onComplete: @escaping () -> Void) {
+    init(viewModel: OnboardingViewModel) {
         self.viewModel = viewModel
-        self.onComplete = onComplete
+
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -131,7 +130,8 @@ final class OnboardingViewController: BaseViewController {
     }
     
     @objc private func skipButtonTapped() {
-        onComplete()
+        UserDefaults.standard.set(false, forKey: "isFirstTime")
+        dismiss(animated: true)
     }
 }
 
