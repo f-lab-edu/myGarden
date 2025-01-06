@@ -7,39 +7,36 @@
 
 // 데이터 처리와 비즈니스 로직
 import UIKit
-import Combine
-import SwiftUICore
 import CoreData
 
 class OnboardingViewModel: ObservableObject {
     
-    @Published var isFirstTimeUser: Bool = true
     @Published var currentPage: Int = 0
     var onboardingCompleted: (() -> Void)?
     
-    private(set) var Onboardinglist: [OnboardingModel] = [
-        OnboardingModel(imageName: "img-flowerpot", title: "안녕하세요", description: "first"),
-        OnboardingModel(imageName: "img-hand", title: "알람", description: "second"),
-        OnboardingModel(imageName: "img-leafs", title: "마지막", description: "last")
-    ]
+    var Onboardinglist: [String] = ["img-flowerpot", "img-hand","img-leafs",
+                                    "img-flowerpot", "img-hand","img-leafs",]
     
-    func getCurrentSlide() -> OnboardingModel {
-        return Onboardinglist[currentPage]
+    func updatePageIndex(for scrollView: UIScrollView) {
+        currentPage = Int(scrollView.contentOffset.x / scrollView.frame.width)
     }
     
-    func moveToNextPage() {
-        if currentPage < Onboardinglist.count - 1 {
-            currentPage += 1
-        }
+    func scrollToNextPage(scrollView: UIScrollView) {
+        guard currentPage < Onboardinglist.count - 1 else { return }
+        currentPage += 1
+        let nextOffsetX = CGFloat(currentPage) * scrollView.frame.width
+        scrollView.setContentOffset(CGPoint(x: nextOffsetX, y: 0), animated: true)
+        
     }
     
-    func moveToPreviousPage() {
-        if currentPage > 0 {
-            currentPage -= 1
-        }
+    func scrollToPreviousPage(scrollView: UIScrollView) {
+        guard currentPage > 0 else { return }
+        currentPage -= 1
+        let prevOffsetX = CGFloat(currentPage) * scrollView.frame.width
+        scrollView.setContentOffset(CGPoint(x: prevOffsetX, y: 0), animated: true)
     }
-    func completeOnboarding(){
-        isFirstTimeUser = false
+    func updateButtonColors(nextButton: UIButton, previousButton: UIButton) {
+        nextButton.tintColor = currentPage != Onboardinglist.count - 1 ? ColorChart.primary : ColorChart.primaryAsh
+        previousButton.tintColor = currentPage > 0 ? ColorChart.primary : ColorChart.primaryAsh
     }
-
 }
