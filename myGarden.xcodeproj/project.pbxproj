@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4CE1E04A2D248B5C00714977 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4CE1E0492D248B5C00714977 /* SnapKit */; };
 		4CE1E1042D27EF6C00714977 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4CE1E1032D27EF6C00714977 /* RxSwift */; };
+		4CE1E10A2D2B2BC800714977 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 4CE1E1092D2B2BC800714977 /* RxCocoa */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -54,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CE1E10A2D2B2BC800714977 /* RxCocoa in Frameworks */,
 				4CE1E1042D27EF6C00714977 /* RxSwift in Frameworks */,
 				4CE1E04A2D248B5C00714977 /* SnapKit in Frameworks */,
 			);
@@ -109,6 +111,7 @@
 			packageProductDependencies = (
 				4CE1E0492D248B5C00714977 /* SnapKit */,
 				4CE1E1032D27EF6C00714977 /* RxSwift */,
+				4CE1E1092D2B2BC800714977 /* RxCocoa */,
 			);
 			productName = myGarden;
 			productReference = 4CE1DF3B2D24893800714977 /* myGarden.app */;
@@ -400,6 +403,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4CE1E1022D27EF6C00714977 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
+		};
+		4CE1E1092D2B2BC800714977 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4CE1E1022D27EF6C00714977 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

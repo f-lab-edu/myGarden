@@ -16,7 +16,7 @@ class BaseCoordinator: Coordinator {
     //    var childCoordinators: [Coordinator] = []
     //
     func finish() {
-        fatalError("finish가 비었습니다")
+//        fatalError("finish가 비었습니다")
     }
     
     //    func addChildCoordinator(_ coordinator:  Coordinator) {

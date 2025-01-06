@@ -8,15 +8,22 @@
 import UIKit
 
 class HomeCoordinator : BaseCoordinator {
-    var rootViewController: BaseViewController
     
-    init(rootViewController: BaseViewController) {
-        self.rootViewController = rootViewController
+    var window: UIWindow?
+    
+    init(window: UIWindow?) {
+        self.window = window
     }
     
+    
     override func start() {
-        // 홈 화면을 보여줄 뷰 컨트롤러 생성
-   
+        let homeViewController = HomeViewController()
+        window?.rootViewController = homeViewController
+        window?.makeKeyAndVisible()
+        if UserDefaults.standard.object(forKey: "isFirstTime") == nil {
+            let onboardingCoordinator = OnboardingCoordinator(rootViewController: homeViewController)
+            onboardingCoordinator.start()
+        }
     }
     
     

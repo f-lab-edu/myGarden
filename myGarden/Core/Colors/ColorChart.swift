@@ -89,7 +89,7 @@ enum ColorChart {
     // accent 강조 색상
     static var accent: UIColor {
         UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor(hex: "EFB495") : UIColor(hex: "FFCF81")
+            traitCollection.userInterfaceStyle == .dark ? UIColor(hex: "C62E2E") : UIColor(hex: "B8001F")
         }
     }
 

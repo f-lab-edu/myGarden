@@ -9,10 +9,12 @@ import UIKit
 
 
 class HomeViewController : BaseViewController {
-
+    var viewModel = HomeViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.layoutIfNeeded()
+        print("HomeViewController")
         view.backgroundColor  = .yellow
         let button = UIButton(type: .system)
         button.setTitle("deleteAllUserData", for: .normal)
@@ -21,22 +23,10 @@ class HomeViewController : BaseViewController {
         button.frame = CGRect(x: 100, y: 200, width: 200, height: 50)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         view.addSubview(button)
-        if UserDefaults.standard.object(forKey: "isFirstTime") == nil {
-            UserDefaults.standard.set(true, forKey: "isFirstTime")
-            let onboardingCoordinator = OnboardingCoordinator(rootViewController: self)
-            onboardingCoordinator.start ()
-        }
-    }
-    func moveToHome() {
-        DispatchQueue.main.async {
-            let homeCoordinator = HomeCoordinator(rootViewController: self)
-            homeCoordinator.start()
-            
-        }
-        
-        
+
     }
     @objc func buttonTapped() {
-        UserDefaults.standard.removeObject(forKey: "isFirstTime")
+        viewModel.reset()
+        view.layoutIfNeeded()
     }
 }

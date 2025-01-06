@@ -6,10 +6,13 @@
 //
 import UIKit
 import SnapKit
+import RxSwift
 
 final class OnboardingViewController: BaseViewController {
-    var viewModel: OnboardingViewModel!
- 
+    var viewModel = OnboardingViewModel()
+    let disposeBag = DisposeBag()
+    var coordinator = OnboardingCoordinator(rootViewController: HomeViewController())
+    
     lazy var scrollView : UIScrollView = {
         let view = UIScrollView()
         view.delegate = self
@@ -23,9 +26,6 @@ final class OnboardingViewController: BaseViewController {
     
     lazy var nextButton: UIButton = {
         let button = UIButton(type: .system)
-        if let nextImage = UIImage(systemName: "arrow.right.circle.fill")?.resized(to: CGSize(width: 50, height: 50)) {
-            button.setImage(nextImage, for: .normal)
-        }
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -41,7 +41,7 @@ final class OnboardingViewController: BaseViewController {
     
     lazy var skipButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("완료", for: .normal)
+        button.setTitle("시작하기", for: .normal)
         button.backgroundColor = ColorChart.primary
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.tintColor = .white
@@ -51,22 +51,14 @@ final class OnboardingViewController: BaseViewController {
         return button
     }()
     
-    init(viewModel: OnboardingViewModel) {
-        self.viewModel = viewModel
-
-        super.init(nibName: nil, bundle: nil)
-    }
     
-    @MainActor required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ColorChart.background
         scrollView.delegate = self
-        setupPages()
-        viewModel.updateButtonColors(nextButton: nextButton, previousButton: previousButton)
+        onboardingObserverBind()
+        
     }
     override func configureView(){
         view.addSubview(scrollView)
@@ -98,12 +90,45 @@ final class OnboardingViewController: BaseViewController {
             make.bottom.equalTo(view).offset(-80)
         }
     }
-    // 스크롤 뷰 셋팅
-    private func setupPages() {
-        for i in 0..<viewModel.Onboardinglist.count {
+    
+    func onboardingObserverBind() {
+        viewModel.onboardingList
+            .bind { [weak self] imageNames in
+                self?.setupPages(imageNames: imageNames)
+            }
+            .disposed(by: disposeBag)
+        viewModel.currentPage
+            .subscribe(onNext: { [weak self] page in
+                self?.updateButton(nextButton: self?.nextButton ?? UIButton(), previousButton: self?.previousButton ?? UIButton(), currentPage: page)
+            })
+            .disposed(by: disposeBag)
+    }
+    func updateButton(nextButton: UIButton, previousButton: UIButton, currentPage: Int) {
+        let isLastPage = currentPage == viewModel.onboardingListCount - 1
+        let isFirstPage = currentPage == 0
+        
+        nextButton.rx.tintColor.onNext(isLastPage ? ColorChart.accent : ColorChart.primary)
+        previousButton.rx.tintColor.onNext(isFirstPage ? ColorChart.primaryAsh : ColorChart.primary)
+        previousButton.isEnabled = !isFirstPage
+        
+        let image: UIImage?
+        if isLastPage {
+            image = UIImage(systemName: "checkmark.circle.fill")?.resized(to: CGSize(width: 50, height: 50))
+            
+        } else {
+            image = UIImage(systemName: "arrow.right.circle.fill")?.resized(to: CGSize(width: 50, height: 50))
+            
+        }
+        Observable.just(image)
+            .bind(to: nextButton.rx.image(for: .normal))
+            .disposed(by: disposeBag)
+    }
+    
+    func setupPages(imageNames: [String]) {
+        for (i, imageName) in imageNames.enumerated() {
             let imageView = UIImageView()
             imageView.contentMode = .scaleToFill
-            if let image = UIImage(named: viewModel.Onboardinglist[i]) {
+            if let image = UIImage(named: imageName) {
                 imageView.image = image
             }
             scrollView.addSubview(imageView)
@@ -115,29 +140,32 @@ final class OnboardingViewController: BaseViewController {
                 make.left.equalTo(view.frame.width * CGFloat(i))
             }
         }
-        scrollView.contentSize = CGSize(width: view.frame.width * CGFloat(viewModel.Onboardinglist.count), height: view.frame.height)
+        scrollView.contentSize = CGSize(width: view.frame.width * CGFloat(imageNames.count), height: view.frame.height)
     }
     
-    // 버튼 이벤트
+    
     @objc private func nextButtonTapped() {
-        viewModel.scrollToNextPage(scrollView: scrollView)
-        viewModel.updateButtonColors(nextButton: nextButton, previousButton: previousButton)
+        if viewModel._currentPage.value == viewModel.onboardingListCount - 1 {
+            viewModel.completeOnboarding()
+            coordinator.finish()
+        } else {
+            viewModel.scrollToNextPage(scrollView: scrollView)
+        }
     }
     
     @objc private func previousButtonTapped() {
         viewModel.scrollToPreviousPage(scrollView: scrollView)
-        viewModel.updateButtonColors(nextButton: nextButton, previousButton: previousButton)
     }
     
     @objc private func skipButtonTapped() {
-        UserDefaults.standard.set(false, forKey: "isFirstTime")
-        dismiss(animated: true)
+        viewModel.completeOnboarding()
+        coordinator.finish()
     }
+    
 }
 
 extension OnboardingViewController :UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         viewModel.updatePageIndex(for: scrollView)
-        viewModel.updateButtonColors(nextButton: nextButton, previousButton: previousButton)
     }
 }

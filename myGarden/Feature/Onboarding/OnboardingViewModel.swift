@@ -8,35 +8,48 @@
 // 데이터 처리와 비즈니스 로직
 import UIKit
 import CoreData
+import RxSwift
+import RxCocoa
 
-class OnboardingViewModel: ObservableObject {
+class OnboardingViewModel {
+    let disposeBag = DisposeBag()
+
+    var _currentPage = BehaviorRelay<Int>(value: 0)
+    var currentPage: Observable<Int> {
+        return _currentPage.asObservable()
+    }
+    func updateCurrentPage(_ newValue: Int) {
+        _currentPage.accept(newValue)
+    }
     
-    @Published var currentPage: Int = 0
-    var onboardingCompleted: (() -> Void)?
-    
-    var Onboardinglist: [String] = ["img-flowerpot", "img-hand","img-leafs",
-                                    "img-flowerpot", "img-hand","img-leafs",]
-    
+    private let _onboardingList = BehaviorRelay<[String]>(value: ["img-flowerpot", "img-hand","img-leafs","img-flowerpot", "img-hand","img-leafs"])
+    var onboardingList: Observable<[String]> {
+        return _onboardingList.asObservable()
+    }
+    var onboardingListCount: Int {
+            return _onboardingList.value.count
+        }
     func updatePageIndex(for scrollView: UIScrollView) {
-        currentPage = Int(scrollView.contentOffset.x / scrollView.frame.width)
+        let page = Int(scrollView.contentOffset.x / scrollView.frame.width)
+        updateCurrentPage(page)
     }
     
     func scrollToNextPage(scrollView: UIScrollView) {
-        guard currentPage < Onboardinglist.count - 1 else { return }
-        currentPage += 1
-        let nextOffsetX = CGFloat(currentPage) * scrollView.frame.width
+        guard _currentPage.value != onboardingListCount - 1 else { return }
+        updateCurrentPage(_currentPage.value + 1)
+        let nextOffsetX = CGFloat(_currentPage.value) * scrollView.frame.width
         scrollView.setContentOffset(CGPoint(x: nextOffsetX, y: 0), animated: true)
-        
     }
     
     func scrollToPreviousPage(scrollView: UIScrollView) {
-        guard currentPage > 0 else { return }
-        currentPage -= 1
-        let prevOffsetX = CGFloat(currentPage) * scrollView.frame.width
+        guard _currentPage.value > 0 else { return }
+        updateCurrentPage(_currentPage.value - 1)
+        let prevOffsetX = CGFloat(_currentPage.value) * scrollView.frame.width
         scrollView.setContentOffset(CGPoint(x: prevOffsetX, y: 0), animated: true)
     }
-    func updateButtonColors(nextButton: UIButton, previousButton: UIButton) {
-        nextButton.tintColor = currentPage != Onboardinglist.count - 1 ? ColorChart.primary : ColorChart.primaryAsh
-        previousButton.tintColor = currentPage > 0 ? ColorChart.primary : ColorChart.primaryAsh
+ 
+    func completeOnboarding() {
+        UserDefaults.standard.set(false, forKey: "isFirstTime")
     }
+    
 }
