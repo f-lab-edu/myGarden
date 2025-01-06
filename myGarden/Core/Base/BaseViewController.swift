@@ -27,7 +27,8 @@ class BaseViewController: UIViewController {
 
     }
     override func viewWillAppear(_ animated: Bool) {
-       
+        Themes.updateTheme()
+      
     }
     
 }
