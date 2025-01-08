@@ -14,8 +14,7 @@ class HomeCoordinator : BaseCoordinator {
     init(window: UIWindow?) {
         self.window = window
     }
-    
-    
+
     override func start() {
         let homeViewController = HomeViewController()
         window?.rootViewController = homeViewController
@@ -25,6 +24,5 @@ class HomeCoordinator : BaseCoordinator {
             onboardingCoordinator.start()
         }
     }
-    
-    
+
 }
