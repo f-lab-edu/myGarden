@@ -42,3 +42,17 @@ func saveUserData(firstTime: Bool) {
         print("Could not save. \(error), \(error.userInfo)")
     }
 }
+
+// 온보딩 테스트용 생성 추후 삭제
+func deleteUserData() {
+    let context = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
+    let fetchRequest: NSFetchRequest<NSFetchRequestResult> = UserData.fetchRequest()
+    let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+    
+    do {
+        try context.execute(deleteRequest)
+        try context.save()
+    } catch let error as NSError {
+        print(" \(error), \(error.userInfo)")
+    }
+}
