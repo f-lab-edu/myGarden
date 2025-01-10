@@ -122,8 +122,8 @@ final class OnboardingViewController: BaseViewController {
         // 버튼들의 스타일 업데이트
         viewModel.isLastPageSet()
         
-        skipButton.backgroundColor = viewModel.skipButtonSet.value
-        nextButton.tintColor = viewModel.nextButttonSet.value
+        skipButton.backgroundColor = viewModel.skipButtonSet
+        nextButton.tintColor = viewModel.nextButttonSet
         previousButton.tintColor = viewModel.previousButtonSet.value
         
       
