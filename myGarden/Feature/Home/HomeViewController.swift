@@ -23,10 +23,9 @@ class HomeViewController : BaseViewController {
         button.frame = CGRect(x: 100, y: 200, width: 200, height: 50)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         view.addSubview(button)
-
+        
     }
     @objc func buttonTapped() {
         viewModel.reset()
-        view.layoutIfNeeded()
     }
 }

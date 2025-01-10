@@ -7,9 +7,9 @@
 import UIKit
 import RxSwift
 
-class OnboardingCoordinator: BaseCoordinator {
+final class OnboardingCoordinator: BaseCoordinator {
     var rootViewController : BaseViewController
-   
+    
     
     init(rootViewController: BaseViewController) {
         self.rootViewController = rootViewController
@@ -17,14 +17,13 @@ class OnboardingCoordinator: BaseCoordinator {
     
     override func start() {
         let onboardingViewController = OnboardingViewController()
-        UserDefaults.standard.set(true, forKey: "isFirstTime")
+        onboardingViewController.viewModel = OnboardingViewModel(coordinator: self)
         onboardingViewController.modalPresentationStyle = .fullScreen
-        onboardingViewController.coordinator = self
         rootViewController.present(onboardingViewController, animated: true)
-        
     }
+    
     override func finish() {
-        print("onboarding finish")
+        UserDefaults.standard.set(false, forKey: "isFirstTime")
         rootViewController.presentedViewController?.dismiss(animated: true)
     }
 }

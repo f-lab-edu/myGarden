@@ -10,110 +10,82 @@ import SwiftUI
 
 
 enum ColorChart {
-    // primary 색상
+    // Primary 색상
     static var primary: UIColor {
-        UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor(hex: "3E7B27") : UIColor(hex: "5CB338")
-        }
+        dynamicColor(dark: "3E7B27", light: "5CB338")
     }
-    
+
     static var primaryAsh: UIColor {
-        UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor(hex: "A5B68D") : UIColor(hex: "85A98F")
-        }
+        dynamicColor(dark: "A5B68D", light: "85A98F")
     }
 
-    // secondary 색상
+    // Secondary 색상
     static var secondary: UIColor {
-        UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor(hex: "638C6D") : UIColor(hex: "BFD8AF")
-        }
+        dynamicColor(dark: "638C6D", light: "BFD8AF")
     }
 
-    // background 색상
+    // Background 색상
     static var background: UIColor {
-        UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor(hex: "333333") : UIColor(hex: "FFFFFF")
-        }
+        dynamicColor(dark: "333333", light: "FFFFFF")
     }
 
-    // text 색상
+    // Text 색상
     static var text: UIColor {
-        UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black
-        }
+        dynamicColor(dark: "FFFFFF", light: "000000")
     }
 
-    // textFieldBackground 색상
+    // TextField 색상
     static var textFieldBackground: UIColor {
-        UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor(hex: "333333") : UIColor(hex: "F5F5F5")
-        }
+        dynamicColor(dark: "333333", light: "F5F5F5")
     }
 
-    // textFieldBorder 색상
     static var textFieldBorder: UIColor {
-        UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor(hex: "555555") : UIColor(hex: "BFD8AF")
-        }
+        dynamicColor(dark: "555555", light: "BFD8AF")
     }
 
-    // textFieldFocus 색상
     static var textFieldFocus: UIColor {
-        UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor(hex: "1E88E5") : UIColor(hex: "1976D2")
-        }
+        dynamicColor(dark: "1E88E5", light: "1976D2")
     }
 
-    // border 색상
+    // Border 색상
     static var border: UIColor {
-        UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor(hex: "9DBC98") : UIColor(hex: "99BC85")
-        }
+        dynamicColor(dark: "9DBC98", light: "99BC85")
     }
 
-    // border background 색상
     static var borderBackground: UIColor {
-        UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor(hex: "444444") : UIColor(hex: "FFFFFF")
-        }
+        dynamicColor(dark: "444444", light: "FFFFFF")
     }
 
-    // submit 색상
+    // Submit 색상
     static var submit: UIColor {
-        UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor(hex: "16423C") : UIColor(hex: "0D7C66")
-        }
+        dynamicColor(dark: "16423C", light: "0D7C66")
     }
 
-    // accent 강조 색상
+    // Accent 강조 색상
     static var accent: UIColor {
-        UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor(hex: "C62E2E") : UIColor(hex: "B8001F")
-        }
+        dynamicColor(dark: "C62E2E", light: "B8001F")
     }
 
-    // placeholder 색상
+    // Placeholder 색상
     static var placeholder: UIColor {
-        UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor.darkGray : UIColor.lightGray
-        }
+        UIColor { $0.userInterfaceStyle == .dark ? .darkGray : .lightGray }
     }
 
-    // success 색상
+    // Success 색상
     static var success: UIColor {
-        UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor(hex: "117554") : UIColor(hex: "86D293")
-        }
+        dynamicColor(dark: "117554", light: "86D293")
     }
 
-    // error 색상
-    static var error: UIColor {
-        UIColor.red
-    }
+    // Error 색상
+    static var error: UIColor { .red }
 
-    // warning 색상
-    static var warning: UIColor {
-        UIColor.orange
+    // Warning 색상
+    static var warning: UIColor { .orange }
+}
+
+extension ColorChart {
+    private static func dynamicColor(dark: String, light: String) -> UIColor {
+        UIColor { $0.userInterfaceStyle == .dark ? UIColor(hex: dark) : UIColor(hex: light) }
     }
 }
+

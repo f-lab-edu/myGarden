@@ -9,9 +9,8 @@ import SnapKit
 import RxSwift
 
 final class OnboardingViewController: BaseViewController {
-    var viewModel = OnboardingViewModel()
+    var viewModel : OnboardingViewModel?
     let disposeBag = DisposeBag()
-    var coordinator = OnboardingCoordinator(rootViewController: HomeViewController())
     
     lazy var scrollView : UIScrollView = {
         let view = UIScrollView()
@@ -52,7 +51,6 @@ final class OnboardingViewController: BaseViewController {
     }()
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ColorChart.background
@@ -91,39 +89,43 @@ final class OnboardingViewController: BaseViewController {
         }
     }
     
+    //Observer 바인딩 부분
     func onboardingObserverBind() {
-        viewModel.onboardingList
+        viewModel?.onboardingList
             .bind { [weak self] imageNames in
                 self?.setupPages(imageNames: imageNames)
             }
             .disposed(by: disposeBag)
-        viewModel.currentPage
+        viewModel?.currentPage
             .subscribe(onNext: { [weak self] page in
-                self?.updateButton(nextButton: self?.nextButton ?? UIButton(), previousButton: self?.previousButton ?? UIButton(), currentPage: page)
+                self?.updateButton(currentPage: page)
             })
             .disposed(by: disposeBag)
     }
-    func updateButton(nextButton: UIButton, previousButton: UIButton, currentPage: Int) {
-        let isLastPage = currentPage == viewModel.onboardingListCount - 1
-        let isFirstPage = currentPage == 0
+    
+    // 버튼을 업데이트 하는 부분
+    func updateButton(currentPage: Int) {
+        let isLastPage = currentPage == viewModel!.onboardingListCount - 1
+        let skipButtonColor = isLastPage ? ColorChart.accent : ColorChart.primary
+        let nextButtonColor = isLastPage ? ColorChart.submit : ColorChart.primary
+        let previousButtonColor = currentPage == 0 ? ColorChart.primaryAsh : ColorChart.primary
         
-        nextButton.rx.tintColor.onNext(isLastPage ? ColorChart.accent : ColorChart.primary)
-        previousButton.rx.tintColor.onNext(isFirstPage ? ColorChart.primaryAsh : ColorChart.primary)
-        previousButton.isEnabled = !isFirstPage
+        // 색상 업데이트
+        skipButton.backgroundColor = skipButtonColor
+        nextButton.tintColor = nextButtonColor
+        previousButton.tintColor = previousButtonColor
         
-        let image: UIImage?
+        // 이미지 업데이트
+        let nextImage: UIImage?
         if isLastPage {
-            image = UIImage(systemName: "checkmark.circle.fill")?.resized(to: CGSize(width: 50, height: 50))
-            
+            nextImage = UIImage(systemName: "checkmark.circle.fill")?.resized(to: CGSize(width: 50, height: 50))
         } else {
-            image = UIImage(systemName: "arrow.right.circle.fill")?.resized(to: CGSize(width: 50, height: 50))
-            
+            nextImage = UIImage(systemName: "arrow.right.circle.fill")?.resized(to: CGSize(width: 50, height: 50))
         }
-        Observable.just(image)
-            .bind(to: nextButton.rx.image(for: .normal))
-            .disposed(by: disposeBag)
+        nextButton.setImage(nextImage, for: .normal)
     }
     
+    // 페이지 셋팅
     func setupPages(imageNames: [String]) {
         for (i, imageName) in imageNames.enumerated() {
             let imageView = UIImageView()
@@ -145,27 +147,28 @@ final class OnboardingViewController: BaseViewController {
     
     
     @objc private func nextButtonTapped() {
-        if viewModel._currentPage.value == viewModel.onboardingListCount - 1 {
-            viewModel.completeOnboarding()
-            coordinator.finish()
-        } else {
-            viewModel.scrollToNextPage(scrollView: scrollView)
-        }
+        viewModel?.scrollToNextPage()
+        updateScrollViewPosition()
     }
     
     @objc private func previousButtonTapped() {
-        viewModel.scrollToPreviousPage(scrollView: scrollView)
+        viewModel?.scrollToPreviousPage()
+        updateScrollViewPosition()
     }
     
     @objc private func skipButtonTapped() {
-        viewModel.completeOnboarding()
-        coordinator.finish()
+        viewModel?.completeOnboarding()
     }
     
+    func updateScrollViewPosition() {
+        let offsetX = CGFloat((viewModel?._currentPage.value)!) * scrollView.frame.width
+        scrollView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
+    }
 }
 
 extension OnboardingViewController :UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        viewModel.updatePageIndex(for: scrollView)
+        let page = Int(scrollView.contentOffset.x / scrollView.frame.width)
+        viewModel?.updateCurrentPage(page)
     }
 }
