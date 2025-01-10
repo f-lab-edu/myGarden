@@ -16,8 +16,8 @@ final class OnboardingCoordinator: BaseCoordinator {
     }
     
     override func start() {
-        let onboardingViewController = OnboardingViewController()
-        onboardingViewController.viewModel = OnboardingViewModel(coordinator: self)
+        let onboardingViewModel = OnboardingViewModel(coordinator: self)
+        let onboardingViewController = OnboardingViewController(viewModel: onboardingViewModel)
         onboardingViewController.modalPresentationStyle = .fullScreen
         rootViewController.present(onboardingViewController, animated: true)
     }
