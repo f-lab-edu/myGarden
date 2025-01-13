@@ -12,11 +12,11 @@ import SwiftUI
 enum ColorChart {
     // Primary 색상
     static var primary: UIColor {
-        dynamicColor(dark: "3E7B27", light: "5CB338")
+        dynamicColor(dark: "498c30", light: "5CB338")
     }
 
     static var primaryAsh: UIColor {
-        dynamicColor(dark: "A5B68D", light: "85A98F")
+        dynamicColor(dark: "a8b891", light: "85A98F")
     }
 
     // Secondary 색상
@@ -26,7 +26,11 @@ enum ColorChart {
 
     // Background 색상
     static var background: UIColor {
-        dynamicColor(dark: "333333", light: "FFFFFF")
+        dynamicColor(dark: "222222", light: "FFFFFF")
+    }
+    
+    static var backgroundLight: UIColor {
+        dynamicColor(dark: "777777", light: "d2d2d2")
     }
 
     // Text 색상

@@ -8,6 +8,8 @@
 class PlantListViewController : BaseViewController {
     
     override func viewDidLoad() {
+        view.backgroundColor = .green
+        title = "Plant List"
         print("PlantListViewController")
     }
 }
