@@ -17,6 +17,13 @@ class OnboardingViewModel {
     init(coordinator: OnboardingCoordinator) {
         self.coordinator = coordinator
     }
+    var isLastPage = BehaviorRelay<Bool>(value: false)
+    
+    var skipButtonSet = BehaviorRelay<UIColor>(value: ColorChart.primary)
+    var nextButttonSet = BehaviorRelay<UIColor>(value: ColorChart.primary)
+    var nextButtonImgSet = UIImage(systemName: "arrow.right.circle.fill")?.resized(to: CGSize(width: 50, height: 50))
+    
+    var previousButtonSet = BehaviorRelay<UIColor>(value: ColorChart.primaryAsh)
     
     var _currentPage = BehaviorRelay<Int>(value: 0)
     var currentPage: Observable<Int> {
@@ -31,7 +38,17 @@ class OnboardingViewModel {
     var onboardingListCount: Int {
         return _onboardingList.value.count
     }
-    
+    func isLastPageSet() {
+        isLastPage.accept(_currentPage.value == onboardingListCount - 1)
+        skipButtonSet.accept(isLastPage.value ? ColorChart.accent : ColorChart.primary)
+        nextButttonSet.accept(isLastPage.value ? ColorChart.submit : ColorChart.primary)
+        previousButtonSet.accept(_currentPage.value == 0 ? ColorChart.primaryAsh : ColorChart.primary)
+        if isLastPage.value {
+            nextButtonImgSet = UIImage(systemName: "checkmark.circle.fill")?.resized(to: CGSize(width: 50, height: 50))
+        } else {
+            nextButtonImgSet = UIImage(systemName: "arrow.right.circle.fill")?.resized(to: CGSize(width: 50, height: 50))
+        }
+    }
     func updateCurrentPage(_ newValue: Int) {
         _currentPage.accept(newValue)
  
