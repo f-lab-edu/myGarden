@@ -13,32 +13,33 @@ class HomeViewController : BaseTabViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor  = .yellow
+        view.backgroundColor  = .orange
         setupTabBar()
         tabBar.backgroundColor = ColorChart.background
         tabBar.tintColor = ColorChart.primary
         tabBar.unselectedItemTintColor = ColorChart.primaryAsh
+        
     }
     
     private func setupTabBar() {
-        // 첫 번째 탭
+        // 식물 리스트 탭
         let plantListCoordinator = PlantListCoordinator()
         plantListCoordinator.start()
         
-        // 두 번째 탭
+        // 식물 일기 리스트 탭
         let plantDiaryListCoordinator = PlantDiaryListCoordinator()
         plantDiaryListCoordinator.start()
         
-        // 세 번째 탭
+        // 물주기 알람 탭
         let plantAlramCoordinator = PlantAlramCoordinator()
         plantAlramCoordinator.start()
         
-        // 네 번째 탭
+        // 마이페이지 탭
         let myPageViewCoordinator = MyPageCoordinator()
         myPageViewCoordinator.start()
         
         plantListCoordinator.navigationController.tabBarItem = UITabBarItem(
-            title: "Plant List",
+            title: "Plant",
             image: UIImage(systemName: "leaf.fill"),
             tag: 0
         )
@@ -52,44 +53,54 @@ class HomeViewController : BaseTabViewController {
         plantAlramCoordinator.navigationController.tabBarItem = UITabBarItem(
             title: "Alram",
             image: UIImage(systemName: "bell.fill"),
-            tag: 2
+            tag: 3
         )
         
         myPageViewCoordinator.navigationController.tabBarItem = UITabBarItem(
-            title: "My Page",
+            title: "MyPage",
             image: UIImage(systemName: "person.fill"),
-            tag: 3
+            tag: 4
         )
         
         viewControllers = [
             plantListCoordinator.navigationController,
             plantDiaryListCoordinator.navigationController,
+            UIViewController(), // 글쓰기 버튼을 위한 빈 공간 생성
             plantAlramCoordinator.navigationController,
             myPageViewCoordinator.navigationController
         ]
         DiaryAddButtonSet()
+        
     }
     private func DiaryAddButtonSet() {
         let button = UIButton(type: .system)
-        let buttonSize: CGFloat = 60
-        button.frame = CGRect(x: (tabBar.frame.size.width - buttonSize) / 2, y: -buttonSize / 2 - 10, width: buttonSize, height: buttonSize)
-        
+        let buttonSize: CGFloat = 65
+        button.frame = CGRect(x: (tabBar.frame.size.width - buttonSize) / 2, y: -buttonSize / 6, width: buttonSize, height: buttonSize)
         button.layer.cornerRadius = buttonSize / 2
         button.layer.borderWidth = 5
-        button.layer.borderColor = ColorChart.primary.cgColor
-        let pencilIcon = UIImage(systemName: "pencil")?.withRenderingMode(.alwaysTemplate)
-        button.setImage(pencilIcon, for: .normal)
-        button.tintColor = ColorChart.text
-        button.backgroundColor = ColorChart.secondary
+        button.layer.borderColor = ColorChart.primaryAsh.cgColor
+        
+        let icon = UIImage(systemName: "pencil")?
+            .withConfiguration(UIImage.SymbolConfiguration(pointSize: 30))
+        var config = UIButton.Configuration.plain()
+        config.image = icon?.withRenderingMode(.alwaysTemplate)
+        config.imagePlacement = .top
+        config.imagePadding = 5
+
+        button.configuration = config
+        button.tintColor = ColorChart.primary
+        button.backgroundColor = ColorChart.backgroundLight
         button.addTarget(self, action: #selector(DiaryAddButton), for: .touchUpInside)
         tabBar.addSubview(button)
-        tabBar.bringSubviewToFront(button)
-        button.isUserInteractionEnabled = true
     }
     
     @objc private func DiaryAddButton() {
-        print("DiaryAdd")
-        let plantDiaryAddwCoordinator = PlantDiaryAddCoordinator(rootViewController: self)
-        plantDiaryAddwCoordinator.start()
+        let plantDiaryAddCoordinator = PlantDiaryAddCoordinator(rootViewController: self)
+        plantDiaryAddCoordinator.start()
     }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tabBar.items?[2].isEnabled = false
+    }
+
 }

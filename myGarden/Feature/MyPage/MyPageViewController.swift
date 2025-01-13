@@ -9,7 +9,7 @@ class MyPageViewController : BaseViewController {
     
     override func viewDidLoad() {
         view.backgroundColor = .red
-        title = "Plant List"
+        title = "MyPage"
         print("PlantListViewController")
     }
 }

@@ -11,7 +11,7 @@ class PlantAlarmViewController: BaseViewController {
     
     override func viewDidLoad() {
         view.backgroundColor = .gray
-        title = "Plant Alarm"
-        print("PlantListViewController")
+        title = "Alarm"
+        print("PlantAlarmViewController")
     }
 }

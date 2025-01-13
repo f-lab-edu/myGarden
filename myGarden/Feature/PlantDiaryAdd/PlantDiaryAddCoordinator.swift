@@ -20,8 +20,5 @@ class PlantDiaryAddCoordinator : BaseCoordinator {
             rootViewController.present(plantDiaryAddViewController, animated: true, completion: nil)
         }
 
-        func dismiss() {
-            print("PlantDiaryAddCoordinator dismiss")
-            rootViewController.dismiss(animated: true, completion: nil)
-        }
+    
     }
