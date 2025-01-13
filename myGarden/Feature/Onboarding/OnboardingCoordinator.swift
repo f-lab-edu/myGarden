@@ -8,10 +8,10 @@ import UIKit
 import RxSwift
 
 final class OnboardingCoordinator: BaseCoordinator {
-    var rootViewController : BaseViewController
+    var rootViewController : BaseTabViewController
     
     
-    init(rootViewController: BaseViewController) {
+    init(rootViewController: BaseTabViewController) {
         self.rootViewController = rootViewController
     }
     

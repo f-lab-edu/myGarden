@@ -12,21 +12,26 @@ import SwiftUI
 enum ColorChart {
     // Primary 색상
     static var primary: UIColor {
-        dynamicColor(dark: "3E7B27", light: "5CB338")
+        dynamicColor(dark: "248c5a", light: "118B50")
     }
+    
 
     static var primaryAsh: UIColor {
-        dynamicColor(dark: "A5B68D", light: "85A98F")
+        dynamicColor(dark: "3a5e45", light: "6aab7c")
     }
 
     // Secondary 색상
     static var secondary: UIColor {
-        dynamicColor(dark: "638C6D", light: "BFD8AF")
+        dynamicColor(dark: "424a3d", light: "BFD8AF")
     }
 
     // Background 색상
     static var background: UIColor {
-        dynamicColor(dark: "333333", light: "FFFFFF")
+        dynamicColor(dark: "2e2e2e", light: "FFFFFF")
+    }
+    
+    static var backgroundLight: UIColor {
+        dynamicColor(dark: "4f4f4f", light: "e6e6e6")
     }
 
     // Text 색상
@@ -36,11 +41,11 @@ enum ColorChart {
 
     // TextField 색상
     static var textFieldBackground: UIColor {
-        dynamicColor(dark: "333333", light: "F5F5F5")
+        dynamicColor(dark: "808080", light: "F5F5F5")
     }
 
     static var textFieldBorder: UIColor {
-        dynamicColor(dark: "555555", light: "BFD8AF")
+        dynamicColor(dark: "464f41", light: "BFD8AF")
     }
 
     static var textFieldFocus: UIColor {

@@ -8,9 +8,9 @@
 import UIKit
 
 class HomeCoordinator : BaseCoordinator {
+    var tabCoordinators : [BaseCoordinator] = []
     
     var window: UIWindow?
-    
     init(window: UIWindow?) {
         self.window = window
     }
@@ -23,6 +23,8 @@ class HomeCoordinator : BaseCoordinator {
             let onboardingCoordinator = OnboardingCoordinator(rootViewController: homeViewController)
             onboardingCoordinator.start()
         }
+        
+
     }
 
 }
