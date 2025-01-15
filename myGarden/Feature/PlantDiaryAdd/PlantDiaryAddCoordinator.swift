@@ -16,6 +16,8 @@ class PlantDiaryAddCoordinator : BaseCoordinator {
         }
 
         override func start() {
+            print("PlantDiaryAddCoordinator")
+            print(rootViewController)
             let plantDiaryAddViewController = PlantDiaryAddViewController()
             rootViewController.present(plantDiaryAddViewController, animated: true, completion: nil)
         }
