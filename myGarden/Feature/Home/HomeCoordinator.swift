@@ -24,7 +24,7 @@ final class HomeCoordinator : BaseCoordinator {
         homeTabBarController.homeCoordinator = self
         navigationController.navigationBar.isHidden = true
         navigationController.viewControllers = [homeTabBarController]
-    
+        // 호출 예시
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         
