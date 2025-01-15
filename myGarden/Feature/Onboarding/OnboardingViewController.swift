@@ -9,7 +9,7 @@ import SnapKit
 import RxSwift
 
 final class OnboardingViewController: BaseViewController {
-
+    
     var viewModel : OnboardingViewModel
     let disposeBag = DisposeBag()
     
@@ -18,13 +18,11 @@ final class OnboardingViewController: BaseViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-
+    
     
     @MainActor required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
     
     lazy var scrollView : UIScrollView = {
         let view = UIScrollView()
@@ -111,23 +109,22 @@ final class OnboardingViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
         viewModel.currentPage
-            .subscribe(onNext: { [weak self] page in
-                self?.updateButton(currentPage: page)
+            .subscribe(onNext: { [weak self] page in self?.updateScrollViewPosition(page: page)
+            })
+            .disposed (by: disposeBag)
+        viewModel.buttonViewModelObservable
+            .subscribe(onNext: { [weak self] buttonViewModel in self?.updateButton(buttonViewModel: buttonViewModel)
             })
             .disposed(by: disposeBag)
     }
     
     // 버튼을 업데이트 하는 부분
-    func updateButton(currentPage: Int) {
-        // 버튼들의 스타일 업데이트
-        viewModel.isLastPageSet()
+    func updateButton(buttonViewModel: OnboardingButtonModel) {
         
-        skipButton.backgroundColor = viewModel.skipButtonSet
-        nextButton.tintColor = viewModel.nextButttonSet
-        previousButton.tintColor = viewModel.previousButtonSet.value
-        
-      
-        nextButton.setImage(viewModel.nextButtonImgSet, for: .normal)
+        skipButton.backgroundColor = buttonViewModel.skipButtonSet
+        nextButton.tintColor = buttonViewModel.nextButttonSet
+        previousButton.tintColor = buttonViewModel.previousButtonSet
+        nextButton.setImage(buttonViewModel.nextButtonImgSet, for: .normal)
     }
     
     // 페이지 셋팅
@@ -152,21 +149,19 @@ final class OnboardingViewController: BaseViewController {
     
     
     @objc private func nextButtonTapped() {
-        viewModel.scrollToNextPage()
-        updateScrollViewPosition()
+        viewModel.nextButtonTapped()
     }
     
     @objc private func previousButtonTapped() {
-        viewModel.scrollToPreviousPage()
-        updateScrollViewPosition()
+        viewModel.previousButtonTapped()
     }
     
     @objc private func skipButtonTapped() {
-        viewModel.completeOnboarding()
+        viewModel.skipButtonTapped()
     }
     
-    func updateScrollViewPosition() {
-        let offsetX = CGFloat(viewModel._currentPage.value) * scrollView.frame.width
+    func updateScrollViewPosition(page : Int) {
+        let offsetX = CGFloat(page) * scrollView.frame.width
         scrollView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
     }
 }
@@ -174,6 +169,6 @@ final class OnboardingViewController: BaseViewController {
 extension OnboardingViewController :UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let page = Int(scrollView.contentOffset.x / scrollView.frame.width)
-        viewModel.updateCurrentPage(page)
+        viewModel.scrollViewDidEndDecelerating(page:page)
     }
 }

@@ -20,7 +20,7 @@ final class HomeCoordinator : BaseCoordinator {
     
     override func start() {
         homeTabBarSetting()
-        
+        homeTabBarController.viewModel = HomeViewModel(coordinator: self)
         homeTabBarController.homeCoordinator = self
         navigationController.navigationBar.isHidden = true
         navigationController.viewControllers = [homeTabBarController]
@@ -32,8 +32,13 @@ final class HomeCoordinator : BaseCoordinator {
             let onboardingCoordinator = OnboardingCoordinator(rootViewController: homeTabBarController)
             onboardingCoordinator.start()
         }
+        
     }
     
+    func startOnboarding() {
+        let onboardingCoordinator = OnboardingCoordinator(rootViewController: homeTabBarController)
+        onboardingCoordinator.start()
+    }
     
     private func homeTabBarSetting() {
         // 식물 리스트 탭

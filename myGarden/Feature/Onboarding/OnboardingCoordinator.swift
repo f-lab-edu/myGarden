@@ -16,6 +16,8 @@ final class OnboardingCoordinator: BaseCoordinator {
     }
     
     override func start() {
+        UserDefaults.standard.removeObject(forKey: "isFirstTime")
+        UserDefaults.standard.synchronize()
         let onboardingViewModel = OnboardingViewModel(coordinator: self)
         let onboardingViewController = OnboardingViewController(viewModel: onboardingViewModel)
         onboardingViewController.modalPresentationStyle = .fullScreen
@@ -23,7 +25,6 @@ final class OnboardingCoordinator: BaseCoordinator {
     }
     
     override func finish() {
-        UserDefaults.standard.set(false, forKey: "isFirstTime")
         rootViewController.presentedViewController?.dismiss(animated: true)
     }
 }
