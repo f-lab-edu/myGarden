@@ -17,44 +17,29 @@ class OnboardingViewModel {
     init(coordinator: OnboardingCoordinator) {
         self.coordinator = coordinator
     }
-    var isLastPage = BehaviorRelay<Bool>(value: false)
     
-    var skipButtonSet = BehaviorRelay<UIColor>(value: ColorChart.primary)
-    var nextButttonSet = BehaviorRelay<UIColor>(value: ColorChart.primary)
-    var nextButtonImgSet = UIImage(systemName: "arrow.right.circle.fill")?.resized(to: CGSize(width: 50, height: 50))
+    private let _buttonSet : BehaviorRelay<OnboardingButtonModel> = .init(value : OnboardingButtonModel(skipButtonSet: ColorChart.primary, nextButttonSet: ColorChart.primary,previousButtonSet : ColorChart.primaryAsh,nextButtonImgSet: UIImage(systemName: "arrow.right.circle.fill")?.resized(to: CGSize(width: 50, height: 50))))
     
-    var previousButtonSet = BehaviorRelay<UIColor>(value: ColorChart.primaryAsh)
+    private var _currentPage = BehaviorRelay<Int>(value: 0)
     
-    var _currentPage = BehaviorRelay<Int>(value: 0)
-    var currentPage: Observable<Int> {
-        return _currentPage.asObservable()
-    }
     
     private let _onboardingList = BehaviorRelay<[String]>(value: ["img-flowerpot", "img-hand", "img-leafs", "img-flowerpot", "img-hand", "img-leafs"])
-    var onboardingList: Observable<[String]> {
-        return _onboardingList.asObservable()
-    }
     
-    var onboardingListCount: Int {
+    
+    private var onboardingListCount: Int {
         return _onboardingList.value.count
     }
-    func isLastPageSet() {
-        isLastPage.accept(_currentPage.value == onboardingListCount - 1)
-        skipButtonSet.accept(isLastPage.value ? ColorChart.accent : ColorChart.primary)
-        nextButttonSet.accept(isLastPage.value ? ColorChart.submit : ColorChart.primary)
-        previousButtonSet.accept(_currentPage.value == 0 ? ColorChart.primaryAsh : ColorChart.primary)
-        if isLastPage.value {
-            nextButtonImgSet = UIImage(systemName: "checkmark.circle.fill")?.resized(to: CGSize(width: 50, height: 50))
-        } else {
-            nextButtonImgSet = UIImage(systemName: "arrow.right.circle.fill")?.resized(to: CGSize(width: 50, height: 50))
-        }
+    private func buttonViewModelUpdate() {
+        let isLastPage = _currentPage.value == onboardingListCount - 1
+        _buttonSet.accept(OnboardingButtonModel(skipButtonSet: isLastPage ? ColorChart.accent : ColorChart.primary, nextButttonSet: _currentPage.value != 0 ? ColorChart.primary : ColorChart.primaryAsh, previousButtonSet: isLastPage ? ColorChart.primary : ColorChart.primary, nextButtonImgSet: isLastPage ? UIImage(systemName: "checkmark.circle.fill")?.resized(to: CGSize(width: 50, height: 50)): UIImage(systemName: "arrow.right.circle.fill")?.resized(to: CGSize(width: 50, height: 50))))
+        
     }
-    func updateCurrentPage(_ newValue: Int) {
+    private func updateCurrentPage(_ newValue: Int) {
         _currentPage.accept(newValue)
- 
+        buttonViewModelUpdate()
     }
     
-    func scrollToNextPage() {
+    private func scrollToNextPage() {
         if _currentPage.value < onboardingListCount - 1 {
             updateCurrentPage(_currentPage.value + 1)
         } else {
@@ -62,14 +47,45 @@ class OnboardingViewModel {
         }
     }
     
-    func scrollToPreviousPage() {
+    private func scrollToPreviousPage() {
         guard _currentPage.value > 0 else { return }
         updateCurrentPage(_currentPage.value - 1)
     }
     
-    func completeOnboarding() {
+    private func completeOnboarding() {
+        UserDefaults.standard.set(false, forKey: "isFirstTime")
         coordinator.finish()
     }
     
-  
+    var currentPage: Observable<Int> {
+        return _currentPage.asObservable()
+    }
+    var onboardingList: Observable<[String]> {
+        return _onboardingList.asObservable()
+    }
+    var buttonViewModelObservable :Observable<OnboardingButtonModel> {
+        return _buttonSet.asObservable()
+    }
+    
+    func nextButtonTapped (){
+        scrollToNextPage()
+    }
+    func previousButtonTapped (){
+        scrollToPreviousPage()
+    }
+    func skipButtonTapped (){
+        completeOnboarding()
+    }
+    
+    func scrollViewDidEndDecelerating(page : Int){
+        updateCurrentPage(page)
+    }
+}
+
+
+struct OnboardingButtonModel {
+    var skipButtonSet : UIColor
+    var nextButttonSet : UIColor
+    var previousButtonSet : UIColor
+    var nextButtonImgSet : UIImage?
 }

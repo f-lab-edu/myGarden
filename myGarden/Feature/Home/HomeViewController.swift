@@ -8,12 +8,13 @@ import UIKit
 
 final class HomeViewController : UITabBarController {
     var homeCoordinator : HomeCoordinator?
-    
+    var viewModel : HomeViewModel?
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .orange
         tabBarSettting()
         diaryAddButtonSet()
+        viewModel?.reset()
     }
     
     private func tabBarSettting(){

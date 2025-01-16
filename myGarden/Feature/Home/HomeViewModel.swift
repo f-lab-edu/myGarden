@@ -13,7 +13,11 @@ final class HomeViewModel {
     init(coordinator: HomeCoordinator) {
         self.coordinator = coordinator
     }
-
+    func viewDidLoad() {
+        if UserDefaults.standard.object(forKey: "isFirstTime") == nil {
+            coordinator.startOnboarding()
+        }
+    }
     func reset() { // 온보딩 테스트용으로 생성
         print("reset")
         UserDefaults.standard.removeObject(forKey: "isFirstTime")
