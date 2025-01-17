@@ -1,18 +1,39 @@
 //
-//  firebasePlantTest.swift
+//  firebasePlantServices.swift
 //  myGarden
 //
 //  Created by zeze kim on 1/16/25.
 //
-
 import FirebaseFirestore
 
-// Firestore 데이터베이스 참조 가져오기
 let db = Firestore.firestore()
 
-// 모델 데이터를 Firestore에 저장하는 함수
+// 파이어스토어에서 찾아오기 (임시)
+func fetchPlantsByKeyword() {
+    let keyword = "율마"
+    db.collection("plants")
+        .whereField("distbNm", arrayContains: keyword)
+        .getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error getting documents: \(error.localizedDescription)")
+            } else {
+                var plants: [Plant] = []
+                for document in querySnapshot!.documents {
+                    do {
+                        let plant = try document.data(as: Plant.self)
+                        plants.append(plant)
+                    } catch {
+                        print("Error decoding document: \(error)")
+                    }
+                }
+                print("Fetched plants: \(plants.count)")
+            }
+        }
+
+}
+
+// 데이터 파이어 베이스에 저장(임시)
 func savePlantToFirestore() {
-    // Codable 모델을 딕셔너리로 변환
     do {
         let encoder = JSONEncoder()
         let plantData = try encoder.encode(plant)
@@ -92,3 +113,4 @@ let plant = Plant(
 
 // 데이터 저장
 //savePlantToFirestore(plant: plant)
+

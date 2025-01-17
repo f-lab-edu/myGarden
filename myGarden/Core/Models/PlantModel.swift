@@ -10,7 +10,7 @@ struct Plant: Codable {
     var cntntsNo: String?    // 관리 번호
     var plntbneNm: String?   // 식물 학명
     var plntzrNm: String?    // 식물 영명
-    var distbNm: [String?]     // 유통 명
+    var distbNm: [String?]?     // 유통 명
     var fmlNm: String?       // 과명
     var orgplceInfo: String? // 원산지 명
     var adviseInfo: String?  // 조언 정보
@@ -34,4 +34,5 @@ struct Plant: Codable {
     var flclrCodeNm : String? // 꽃 잎 색상
     var lighttdemanddoCodeNm : String? // 광도 요구
     var postngplaceCodeNm : String? // 배치장소
+    
 }
