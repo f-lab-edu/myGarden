@@ -10,7 +10,7 @@ import UIKit
 final class HomeCoordinator : BaseCoordinator {
     var navigationController: UINavigationController
     var homeTabBarController: HomeViewController
-    
+
     var window: UIWindow?
     init(window: UIWindow?) {
         self.window = window
@@ -24,7 +24,7 @@ final class HomeCoordinator : BaseCoordinator {
         homeTabBarController.homeCoordinator = self
         navigationController.navigationBar.isHidden = true
         navigationController.viewControllers = [homeTabBarController]
-    
+
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         

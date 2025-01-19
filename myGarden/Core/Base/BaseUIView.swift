@@ -14,6 +14,7 @@ class BaseUIView: UIView {
         super.init(frame: frame)
         configure()
         setConstraints()
+        configureBindings()
     }
     
     required init?(coder: NSCoder) {
@@ -26,5 +27,6 @@ class BaseUIView: UIView {
     }
     
     func setConstraints() {}
-
+    
+    func configureBindings(){}
 }
