@@ -6,6 +6,98 @@
 //
 import Foundation
 
+<<<<<<< HEAD
+=======
+// PlantcntntsNo 모델
+struct PlantcntntsNo {
+    var cntntsNo: String
+}
+// cntntsNo리스트를 받아 오기 위한
+class PlantNumXMLParserHandler: NSObject, XMLParserDelegate {
+    var currentElement = ""
+    var currentCntntsNo: String = ""
+    var plants: [PlantcntntsNo] = []
+    
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String] = [:]) {
+        currentElement = elementName
+    }
+    
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
+        if currentElement == "cntntsNo" {
+            currentCntntsNo += string.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+    }
+    
+    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+        if elementName == "item" {
+            let plant = PlantcntntsNo(cntntsNo: currentCntntsNo)
+            plants.append(plant)
+            currentCntntsNo = ""
+        }
+    }
+}
+
+func fetchCntntsNoAndSjList() {
+
+    let apiKey = Bundle.main.NONGSARO_API_KEY
+    
+    guard let url = URL(string: "http://api.nongsaro.go.kr/service/garden/gardenList?apiKey=\(apiKey)&numOfRows=5&pageNo=6") else {
+        print("잘못된 URL입니다.")
+        return
+    }
+    
+    let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        if let error = error {
+            print("API 호출 실패: \(error.localizedDescription)")
+            return
+        }
+        
+        guard let data = data else {
+            print("응답 데이터가 없습니다.")
+            return
+        }
+        
+        let xmlParser = XMLParser(data: data)
+        let delegate = PlantNumXMLParserHandler()
+        xmlParser.delegate = delegate
+        
+        if xmlParser.parse() {
+            print("XML 파싱 성공")
+            // 추출된 cntntsNo와 cntntsSj 리스트 출력
+            for plant in delegate.plants {
+                print("cntntsNo: \(plant.cntntsNo)")
+            }
+        } else {
+            print("XML 파싱 실패")
+        }
+    }
+    
+    // 태스크 실행
+    task.resume()
+}
+///cntntsNo: 12938, cntntsSj: 가울테리아
+//cntntsNo: 12954, cntntsSj: 개운죽
+//cntntsNo: 12955, cntntsSj: 골드크레스트 '윌마'
+//cntntsNo: 12957, cntntsSj: 공작야자
+//cntntsNo: 12962, cntntsSj: 관엽베고니아
+//cntntsNo: 13249, cntntsSj: 필로덴드론 콩고
+//cntntsNo: 12987, cntntsSj: 해마리아
+//cntntsNo: 12983, cntntsSj: 행운목
+//cntntsNo: 12981, cntntsSj: 헤미오니티스(하트펀)
+//cntntsNo: 12979, cntntsSj: 헤테로파낙스 프라그란스 (해피트리)
+//cntntsNo: 12978, cntntsSj: 협죽도
+//cntntsNo: 12976, cntntsSj: 형광스킨답서스
+//cntntsNo: 12986, cntntsSj: 호야
+//cntntsNo: 12975, cntntsSj: 호야 엑소티카
+//cntntsNo: 12973, cntntsSj: 호주매
+//cntntsNo: 12971, cntntsSj: 홀리아페페로미아
+//cntntsNo: 12937, cntntsSj: 황금마삭줄
+//cntntsNo: 12932, cntntsSj: 황금죽
+//cntntsNo: 12956, cntntsSj: 후피향나무
+//cntntsNo: 12920, cntntsSj: 흰꽃나도사프란
+//cntntsNo: 12919, cntntsSj: 흰줄무늬달개비(트라데스칸티아)
+//cntntsNo: 12901, cntntsSj: 히포에스테스
+>>>>>>> develop
 
 
 
@@ -70,6 +162,7 @@ class PlantDetailXMLParserHandler: NSObject, XMLParserDelegate {
             currentPlant?.postngplaceCodeNm = string
         case "rtnThumbFileUrl" :
             currentPlant?.rtnThumbFileUrl = string
+
         default:
             break
         }

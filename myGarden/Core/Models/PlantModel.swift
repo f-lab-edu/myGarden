@@ -7,8 +7,6 @@
 import Foundation
 
 struct Plant: Codable {
-//    var cntntsNo: String? // 컨텐츠벊
-//    var cntntsSj:String? //식물명
     var rtnThumbFileUrl:String?
     var cntntsNo: String?    // 관리 번호
     var plntbneNm: String?   // 식물 학명
@@ -35,8 +33,7 @@ struct Plant: Codable {
     var flclrCodeNm : String? // 꽃 잎 색상
     var lighttdemanddoCodeNm : String? // 광도 요구
     var postngplaceCodeNm : String? // 배치장소
-    
-    
+
     
 //    var cntntsNo: String? // 컨텐츠벊
 //    var cntntsSj:String? //식물명
@@ -58,4 +55,5 @@ struct Plant: Codable {
 //    var rtnFileUrl:String?
 //    //    저장 파일 URL
  
+
 }
