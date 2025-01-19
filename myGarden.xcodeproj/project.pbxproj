@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4CBC0B022D384B9A002CA433 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 4CBC0B012D384B9A002CA433 /* FirebaseFirestore */; };
 		4CE1E04A2D248B5C00714977 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4CE1E0492D248B5C00714977 /* SnapKit */; };
 		4CE1E1042D27EF6C00714977 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4CE1E1032D27EF6C00714977 /* RxSwift */; };
 		4CE1E10A2D2B2BC800714977 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 4CE1E1092D2B2BC800714977 /* RxCocoa */; };
@@ -56,6 +57,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4CE1E10A2D2B2BC800714977 /* RxCocoa in Frameworks */,
+				4CBC0B022D384B9A002CA433 /* FirebaseFirestore in Frameworks */,
 				4CE1E1042D27EF6C00714977 /* RxSwift in Frameworks */,
 				4CE1E04A2D248B5C00714977 /* SnapKit in Frameworks */,
 			);
@@ -112,6 +114,7 @@
 				4CE1E0492D248B5C00714977 /* SnapKit */,
 				4CE1E1032D27EF6C00714977 /* RxSwift */,
 				4CE1E1092D2B2BC800714977 /* RxCocoa */,
+				4CBC0B012D384B9A002CA433 /* FirebaseFirestore */,
 			);
 			productName = myGarden;
 			productReference = 4CE1DF3B2D24893800714977 /* myGarden.app */;
@@ -144,6 +147,7 @@
 			packageReferences = (
 				4CE1E0482D248B5C00714977 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				4CE1E1022D27EF6C00714977 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				4CBC0B002D384B9A002CA433 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4CE1DF3C2D24893800714977 /* Products */;
@@ -375,6 +379,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4CBC0B002D384B9A002CA433 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.7.0;
+			};
+		};
 		4CE1E0482D248B5C00714977 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -394,6 +406,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4CBC0B012D384B9A002CA433 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4CBC0B002D384B9A002CA433 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
 		4CE1E0492D248B5C00714977 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4CE1E0482D248B5C00714977 /* XCRemoteSwiftPackageReference "SnapKit" */;
