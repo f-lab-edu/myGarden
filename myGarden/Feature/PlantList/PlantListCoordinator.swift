@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PlantListCoordinator :BaseCoordinator {
+final class PlantListCoordinator :BaseCoordinator {
     var navigationController: UINavigationController!
        
        override func start() {

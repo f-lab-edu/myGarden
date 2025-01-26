@@ -9,36 +9,35 @@ import FirebaseFirestore
 let db = Firestore.firestore()
 
 // 파이어스토어에서 찾아오기 (임시)
-func fetchPlantsByKeyword() {
-    let keyword = "율마"
-    db.collection("plants")
-        .whereField("distbNm", arrayContains: keyword)
-        .getDocuments { (querySnapshot, error) in
-            if let error = error {
-                print("Error getting documents: \(error.localizedDescription)")
-            } else {
-                var plants: [Plant] = []
-                for document in querySnapshot!.documents {
-                    do {
-                        let plant = try document.data(as: Plant.self)
-                        plants.append(plant)
-                    } catch {
-                        print("Error decoding document: \(error)")
-                    }
-                }
-                print("Fetched plants: \(plants.count)")
-            }
-        }
-
-}
-
-// 데이터 파이어 베이스에 저장(임시)
-func savePlantToFirestore() {
+//func fetchPlantsByKeyword() {
+//    let keyword = "율마"
+//    db.collection("plants")
+//        .whereField("distbNm", arrayContains: keyword)
+//        .getDocuments { (querySnapshot, error) in
+//            if let error = error {
+//                print("Error getting documents: \(error.localizedDescription)")
+//            } else {
+//                var plants: [Plant] = []
+//                for document in querySnapshot!.documents {
+//                    do {
+//                        let plant = try document.data(as: Plant.self)
+//                        plants.append(plant)
+//                    } catch {
+//                        print("Error decoding document: \(error)")
+//                    }
+//                }
+//                print("Fetched plants: \(plants.count)")
+//            }
+//        }
+//
+//}
+func savePlantToFirestore(plant : Plant, urlString : String) {
     do {
+        var data = plant
+        data.rtnThumbFileUrl = urlString
         let encoder = JSONEncoder()
-        let plantData = try encoder.encode(plant)
+        let plantData = try encoder.encode(data)
         if let plantDict = try JSONSerialization.jsonObject(with: plantData, options: []) as? [String: Any] {
-            // cntntsNo를 문서 ID로 사용하여 Firestore 컬렉션에 데이터 추가
             db.collection("plants").document(plant.cntntsNo!).setData(plantDict) { error in
                 if let error = error {
                     print("Error adding document: \(error.localizedDescription)")
@@ -82,34 +81,34 @@ func savePlantToFirestore() {
 //    postngplaceCodeNm : "거실 창측 (실내깊이 150~300cm),발코니 내측 (실내깊이 50~150cm),발코니 창측 (실내깊이 0~50cm)"
 //)
 // 예시 데이터
-let plant = Plant(
-    cntntsNo: "44444",  // 문서 ID로 사용할 cntntsNo
-    plntbneNm: "2Dracaena sanderiana 'Celes'",
-    plntzrNm: "2Dracaena sanderiana 'Celes'",
-    distbNm: ["세레스","드라세나"], // 나중에 둘다 넣기
-    fmlNm: "2백합과",
-    orgplceInfo: "2아프리카",
-    adviseInfo: "",
-    imageEvlLinkCours: "",
-    smellCode: "약함",
-    prpgtEraInfo: "",
-    managelevelCodeNm: "초보자",
-    grwtveCodeNm: "보통",
-    grwhTpCodeNm: "16~20℃",
-    winterLwetTpCodeNm: "13℃ 이상",
-    hdCodeNm: "40 ~ 70%",
-    watercycleSprngCodeNm: "흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)",
-    watercycleSummerCodeNm: "흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)",
-    watercycleAutumnCodeNm: "흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)",
-    watercycleWinterCodeNm: "토양 표면이 말랐을때 충분히 관수함",
-    speclmanageInfo: "",
-    fncltyInfo: "",
-    managedemanddoCodeNm: "보통 (약간 잘 견딤)",
-    clCodeNm: "잎보기식물",
-    grwhstleCodeNm : "직립형, 관목형",
-    lighttdemanddoCodeNm : "낮은 광도(300~800 Lux),중간 광도(800~1,500 Lux),높은 광도(1,500~10,000 Lux)",
-    postngplaceCodeNm : "실내 어두운 곳 (실내깊이 500 이상cm),거실 내측 (실내깊이 300~500cm),거실 창측 (실내깊이 150~300cm),발코니 내측 (실내깊이 50~150cm)"
-)
+//let plant = Plant(
+//    cntntsNo: "44444",  // 문서 ID로 사용할 cntntsNo
+//    plntbneNm: "2Dracaena sanderiana 'Celes'",
+//    plntzrNm: "2Dracaena sanderiana 'Celes'",
+//    distbNm: ["세레스","드라세나"], // 나중에 둘다 넣기
+//    fmlNm: "2백합과",
+//    orgplceInfo: "2아프리카",
+//    adviseInfo: "",
+//    imageEvlLinkCours: "",
+//    smellCode: "약함",
+//    prpgtEraInfo: "",
+//    managelevelCodeNm: "초보자",
+//    grwtveCodeNm: "보통",
+//    grwhTpCodeNm: "16~20℃",
+//    winterLwetTpCodeNm: "13℃ 이상",
+//    hdCodeNm: "40 ~ 70%",
+//    watercycleSprngCodeNm: "흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)",
+//    watercycleSummerCodeNm: "흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)",
+//    watercycleAutumnCodeNm: "흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)",
+//    watercycleWinterCodeNm: "토양 표면이 말랐을때 충분히 관수함",
+//    speclmanageInfo: "",
+//    fncltyInfo: "",
+//    managedemanddoCodeNm: "보통 (약간 잘 견딤)",
+//    clCodeNm: "잎보기식물",
+//    grwhstleCodeNm : "직립형, 관목형",
+//    lighttdemanddoCodeNm : "낮은 광도(300~800 Lux),중간 광도(800~1,500 Lux),높은 광도(1,500~10,000 Lux)",
+//    postngplaceCodeNm : "실내 어두운 곳 (실내깊이 500 이상cm),거실 내측 (실내깊이 300~500cm),거실 창측 (실내깊이 150~300cm),발코니 내측 (실내깊이 50~150cm)"
+//)
 
 // 데이터 저장
 //savePlantToFirestore(plant: plant)

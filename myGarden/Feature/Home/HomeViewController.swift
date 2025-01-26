@@ -11,7 +11,7 @@ final class HomeViewController : UITabBarController {
     var viewModel : HomeViewModel?
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .orange
+        view.backgroundColor = ColorChart.background
         tabBarSettting()
         diaryAddButtonSet()
         viewModel?.reset()
@@ -33,28 +33,28 @@ final class HomeViewController : UITabBarController {
         
         // 식물 리스트 탭
         viewControllers[0].tabBarItem = UITabBarItem(
-            title: "Plant",
+            title: "", //Plant
             image: UIImage(systemName: "leaf.fill"),
             tag: 0
         )
         
         // 식물 일기 리스트 탭
         viewControllers[1].tabBarItem = UITabBarItem(
-            title: "Diary",
+            title: "", //Diary
             image: UIImage(systemName: "book.fill"),
             tag: 1
         )
         
         // 물주기 알람 탭
         viewControllers[3].tabBarItem = UITabBarItem(
-            title: "Alram",
+            title: "", //Alram
             image: UIImage(systemName: "bell.fill"),
             tag: 3
         )
         
         // 마이페이지 탭
         viewControllers[4].tabBarItem = UITabBarItem(
-            title: "MyPage",
+            title: "", //MyPage
             image: UIImage(systemName: "person.fill"),
             tag: 4
         )
